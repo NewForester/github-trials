@@ -10,6 +10,7 @@ It is simply a place to try out things described in GitHub articles, make mistak
 Trial           | Description
 -----           | -----------
 local-to-github | adding an pre-existing git repository to GitHub
+rename-remote   | renaming a remote repository from 'origin' to 'github'
 
 ---
 
