@@ -11,6 +11,7 @@ Trial           | Description
 -----           | -----------
 local-to-github | adding an pre-existing git repository to GitHub
 rename-remote   | renaming a remote repository from 'origin' to 'github'
+private-email   | retroactively changing the e-mail address on commits
 
 ---
 
