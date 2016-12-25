@@ -13,6 +13,8 @@ local-to-github    | adding an pre-existing git repository to GitHub
 rename-remote      | renaming a remote repository from 'origin' to 'github'
 private-email      | retroactively changing the e-mail address on commits
 ssh-authentication | changing from https to ssh authentication
+revise-commits     | revising/reordering a sequence of commits
+
 ---
 
 Copyright (C) 2016, NewForester, not for release or reuse.
