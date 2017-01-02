@@ -1,4 +1,6 @@
-Change the name of the remote repository
+<!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
+
+# Change the Name of the Remote Repository
 
 ---
 
@@ -17,24 +19,24 @@ That fits better with the idea that the local and the remote repositories are pe
 
 So, how to change the name of the remote repository from 'origin' to 'github' without changing the URL ?
 
-This will need _get remote_ but also the defaults set by _git push -u_ will need changing.  Hmm ..
+This will need `git remote` but also the defaults set by `git push -u` will need changing.  Hmm ..
 
 ---
 
-Changing the  _git push -u_ parameters looking like being a little tricky.
+Changing the  `git push -u` parameters looking like being a little tricky.
 
-First up, I could not find again any of the _git push_ descriptions I've read recently somewhere in the on-line documentation.
+First up, I could not find again any of the `git push` descriptions I've read recently somewhere in the on-line documentation.
 Par for the course.
 
-So try _git push --help_ and look for the description of the _-u_ flag.
-That refers to _git config --help_.  Good.
+So try `git push --help` and look for the description of the `-u` flag.
+That refers to `git config --help`.  Good.
 
-There are three _git config_ levels:
+There are three `git config` levels:
   * --system - appears to be absent on my system (can't find an empty file)
   * --global - (aka user local), no, not in there but I didn't expect it would be
   * --local - (aka repository local), which is where I would expect it to be
 
-There is no _git config --local --list_ but there is _git config --local --edit_, which in this case is not convenient.
+There is no `git config --local --list` but there is `git config --local --edit`, which in this case is not convenient.
 
 Instead:
 ```
@@ -49,9 +51,9 @@ Instead:
         url = https://github.com/NewForester/github-tst
         fetch = +refs/heads/*:refs/remotes/origin/*
 ```
-Only one reference to 'origin', nothing there to connect it with 'master' for _git push_ and the like.
+Only one reference to 'origin', nothing there to connect it with 'master' for `git push` and the like.
 
-Better not edit the _config_ file but get _git_ to do it for us.
+Better not edit the `config` file but get `git` to do it for us.
 
 ----
 
@@ -74,13 +76,13 @@ Note that just plain
 ```
 is sufficient.
 
-I found the _git remote rename_ from entering _git remote --help_ as you would expect.
-Trouble is with _git_ (I still find), is remembering which command you need in the first place.
-This time I knew it would be _git remote_ so finding what I needed was no problem.
+I found the `git remote rename` from entering `git remote --help` as you would expect.
+Trouble is with `git` (I still find), is remembering which command you need in the first place.
+This time I knew it would be `git remote` so finding what I needed was no problem.
 
 ---
 
-Now to fix up _git _push_.
+Now to fix up `git push`.
 On its own, it does not work.
 
 So try the obvious:
@@ -110,3 +112,5 @@ So there is something special about 'origin' after all.
 ---
 
 Copyright (C) 2016, NewForester, not for release or reuse.
+
+<!-- EOF -->

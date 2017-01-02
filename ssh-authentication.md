@@ -1,6 +1,10 @@
+<!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
+
 # Switch to SSH Authentication
 
-GitHub requires authentication for _git push_ and other 'write' operations.
+---
+
+GitHub requires authentication for `git push` and other 'write' operations.
 GitHub supports
 
   * https
@@ -8,11 +12,11 @@ GitHub supports
 
 authentication.
 
-The GitHub documentation prefers _https_ but does not really say why.
+The GitHub documentation prefers `https` but does not really say why.
 Reading between the lines, this option requires no further set up and so works the same way regardless of the user's operating system platform.
 
-GitHub describes (somewhat misleadingly) setting up _ssh_ authentication as a four stage process.
-The descriptions are clearly for Linux, where the use of _ssh_ is mundane.
+GitHub describes (somewhat misleadingly) setting up `ssh` authentication as a four stage process.
+The descriptions are clearly for Linux, where the use of `ssh` is mundane.
 
 Our 'set-up' involved an extra security minded bell and whistle.
 
@@ -64,19 +68,19 @@ It is just I have a background in automation where any kind of manual interventi
 
 Not using a passphrase, this help article suggested, is no better than using a random password and writing it down.
 
-It proposed using _ssh-agent_ to avoid having to re-enter the passphrase.
+It proposed using `ssh-agent` to avoid having to re-enter the passphrase.
 This does not sound like it achieves anything.
 
-However, with _ssh-agent_ you still have to enter the passphrase once.
+However, with `ssh-agent` you still have to enter the passphrase once.
 It is then cached so that you do not need to re-enter it.
 
 How long is the passphrase cached ?  I am used to seconds or minutes, not hours or days.
-Since the help article said nothing I took it to mean until the _ssh-agent_ is shut down.
+Since the help article said nothing I took it to mean until the `ssh-agent` is shut down.
 I guess it is configurable.
 
-The other potential advantage of using ssh-agent is that it deals with ssh keys on behalf of the application so you do not need to trust every application, only _ssh-agent_.
+The other potential advantage of using ssh-agent is that it deals with ssh keys on behalf of the application so you do not need to trust every application, only `ssh-agent`.
 
-Hmm ... _ssh-agent_ is already started when I log in so perhaps it is already caching credentials.
+Hmm ... `ssh-agent` is already started when I log in so perhaps it is already caching credentials.
 No further action needed.
 
 
@@ -95,8 +99,8 @@ Adding the key tp GitHub was straight forward enough:
    * enter a title
    * copy/paste in your SSH key (the public half)
 
-I did a simple _cat_ and copied/pasted the one line of output.
-The help article suggest using _xclip_ but I didn't have it installed.
+I did a simple `cat` and copied/pasted the one line of output.
+The help article suggest using `xclip` but I didn't have it installed.
 
 You will get a confirmation e-mail from GitHub,
 just so that you know when someone hacks your account and adds such a key.
@@ -108,7 +112,7 @@ This is simple:
 
     $ ssh -T git@github.com
 
-and confirm that you want to connect to _github.com_.
+and confirm that you want to connect to `github.com`.
 This will, with default settings, add the site to your list of known hosts
 so you will not be asked again.
 
@@ -131,11 +135,11 @@ With:
 
     $ ssh -vT git@github.com
 
-I was able to see how _ssh_ was trying to connect and so why it was not working.
+I was able to see how `ssh` was trying to connect and so why it was not working.
 
-It came down to my use of _-f github_ when I generated my key:
-by default, _ssh_ was looking for key files with default names
-and was not even bothering to try the key in _~/.ssh/github_.
+It came down to my use of `-f github` when I generated my key:
+by default, `ssh` was looking for key files with default names
+and was not even bothering to try the key in `~/.ssh/github`.
 
 
 ### Changing a remote's URL
@@ -164,10 +168,16 @@ I needed to fix that.
 I also want the key to be used only for GitHub access and I want only this key to be used.
 No need to waste time trying keys that will not work even if that does not involve any risk.
 
-Both desiderata can be met conveniently with a local (user specific) _ssh_ configuration:
+Both desiderata can be met conveniently with a local (user specific) `ssh` configuration:
 
     $ cd ~/.ssh
     $ cat >> config
     Host = github.com
         IdentityFile = ~/.ssh/id_github
     $ chmod 600 config
+
+---
+
+Copyright (C) 2016, NewForester, not for release or reuse.
+
+<!-- EOF -->

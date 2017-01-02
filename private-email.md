@@ -1,8 +1,10 @@
+<!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
+
 # Change GitHub E-mail Address
 
 ---
 
-Each _git commit_ records who made the commit, including their given e-mail address.
+Each `git commit` records who made the commit, including their given e-mail address.
 
 Publishing my e-mail address on line has in the past resulted in spam.
 I abandoned the sites where my e-mail address was in plain view years ago
@@ -14,7 +16,7 @@ My policy now is never to leave my e-mail address in a public place.
 <!-- See https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/ -->
 
 It is possible to see the e-mail address associated with any commit on GitHub.
-All you need to do is select the commit and add _.patch_ to the URL:
+All you need to do is select the commit and add `.patch` to the URL:
 
     https://github.com/NewForester/cribtutor/commit/2e6f9064eb232a604039296be5de62ff680c133b.patch
 
@@ -40,7 +42,7 @@ How to do this ?
       * ... not all of which worked last time I tried
   * check the "Keep my email address private" box
 
-It seems I had already done this and, yes, _git log_ already showed commits
+It seems I had already done this and, yes, `git log` already showed commits
 with my private e-mail address that I remember doing on-line.
 
 Note: It seems you can tell GitHub about more e-mail addresses.
@@ -48,7 +50,7 @@ Perhaps to count contributions from both home and work.
 
 ---
 
-You also need to change your local _git_ configuration, either for repositories one-by-one:
+You also need to change your local `git` configuration, either for repositories one-by-one:
 
     $ git config user.email "<username>@users.noreply.github.com"
 
@@ -79,7 +81,7 @@ change the configuration and commit again:
 
 <!-- See https://help.github.com/articles/changing-author-info/ -->
 
-Changing the e-mail address in the _git_ configuration will affect new commits
+Changing the e-mail address in the `git` configuration will affect new commits
 but has no retroactive affect on existing commits.
 
 It is possible to change the e-mail address for existing commits but this involves re-writing the repository history.
@@ -88,14 +90,14 @@ This should be avoided.
 If you are going to do it at all, do it as soon as possible.
 Every clone and fork and clone of fork unto the n<sup>th</sup> generation will need to be updated too.
 
-The process is simple but not the kind of thing you are likely to work out for yourself unless you are some kind of _git_ guru.
+The process is simple but not the kind of thing you are likely to work out for yourself unless you are some kind of `git` guru.
 
 First make a fresh (but temporary) bare clone of your repository:
 
     $ git clone --bare https://github.com/user/repo.git temp.git
     $ cd temp.git
 
-Next you need to copy, edit and run a shell script that uses the command _git filter-branch_.
+Next you need to copy, edit and run a shell script that uses the command `git filter-branch`.
 I had never heard of this command before ... an indication that it is not for everyday use.
 
 For the script, see [Changing author info](https://help.github.com/articles/changing-author-info/).
@@ -116,9 +118,9 @@ The temporary clone could now be deleted and the real clone updated:
 
 Job done.
 
-Don't try _git pull_:  that will not give you what you want.
+Don't try `git pull`:  that will not give you what you want.
 
-The _git fetch_, _git rebase_ pair needs to be run in every clone of every fork of the repository.
+The `git fetch`, `git rebase` pair needs to be run in every clone of every fork of the repository.
 It is less of a deal than starting again with new clones and forks.
 
 ---
@@ -137,9 +139,9 @@ Ah. So:
     $ git rebase
     $ git stash pop
 
-The _git rebase_ re-applied the local commits on top of the changed history.
+The `git rebase` re-applied the local commits on top of the changed history.
 
-The _git stash pop_ re-applied the local changes that had not been committed
+The `git stash pop` re-applied the local changes that had not been committed
 but the changes that had been staged before stashing were unstaged after the popping.
 Beware.
 
@@ -165,7 +167,7 @@ that later I would find side affects I did not like.
 
 So I thought about what those side affects might be and how I would check for them afterwards.
 I was pleased that in this instance I found no unsatisfactory side affects:
-_git_ and GitHub both seem to think the way I do and did as I would do.
+`git` and GitHub both seem to think the way I do and did as I would do.
 
 First, the commits attributed to me through my 'real' e-mail address
 are still attributed to me through my 'private' GitHub e-mail address.
@@ -174,5 +176,11 @@ Second, the shell script does not change the commit timestamps.
 So my contribution history was unchanged.
 
 Third, the author's name was not changed.
-My name, as it appears in my _git_ configuration, is not my GitHub user id.
+My name, as it appears in my `git` configuration, is not my GitHub user id.
 So, if I ever need to, I can still tell which commits were made locally and which through the GitHub UI.
+
+---
+
+Copyright (C) 2016, NewForester, not for release or reuse.
+
+<!-- EOF -->

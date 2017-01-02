@@ -1,7 +1,11 @@
+<!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
+
 # Commit Revision - Attempt 1
 
+---
+
 These notes cover the first attempt to reorder/revise a sequence of commits so that it makes more sense.
-Something similar has been done before using ```git cherry-pick``` but that was a long time ago and no documentation survives.
+Something similar has been done before using `git cherry-pick` but that was a long time ago and no documentation survives.
 
 Unfortunately, not everything worked as expected and things got confused.
 This write-up is more a reconstruction.
@@ -25,7 +29,7 @@ The comment revisions were in the files altered by the Massage module integratio
 
 ---
 
-The Atlassian notes suggested that ```git rebase -i``` would do the trick.
+The Atlassian notes suggested that `git rebase -i` would do the trick.
 
 I suppose the operation could have been attempted on the 'master' branch
 but that would have been asking for trouble.
@@ -44,7 +48,7 @@ This is what the Atlassian notes seemed to suggest you should do.
 
 Perhaps I was missing a flag but I don't see which.
 
-```git rebase -i``` started ```git edit``` session but with no commits to rebase.
+`git rebase -i` started `git edit` session but with no commits to rebase.
 On exit from the editor I found 'master' had indeed been rebased on 'cleanup'.
 
 I don't see why this should be so either.
@@ -71,10 +75,10 @@ I started with a rebase of the last commit as I wanted to split it into three.
 
     $ git rebase -i <commit>
 
-In the ```git edit``` session I indicated that I wanted to edit the commit.
+In the `git edit` session I indicated that I wanted to edit the commit.
 
 The Atlassian notes simply say you can split commits this way.
-I referred to ```git rebase --help```, the section on "Splitting Commits", for the how.
+I referred to `git rebase --help`, the section on "Splitting Commits", for the how.
 
     $ git reset HEAD^
 
@@ -100,9 +104,9 @@ I could, and should, have done it the other way around.
     $ git add cribtutor.cpp
     $ git add -i Html.h Html.cpp
 
-All changes to ```cribtutor.cpp``` needed to be staged.
-I think I could have done that from within ```git add -i```.
-The same probably goes for many times I ran ```git diff``` beforehand.
+All changes to `cribtutor.cpp` needed to be staged.
+I think I could have done that from within `git add -i`.
+The same probably goes for many times I ran `git diff` beforehand.
 
 For 'Html.h' there was a slight problem.
 First off, some hunks are run together because there is only one line or so unchanged between them.
@@ -110,7 +114,7 @@ Enter 's' for split and then you can decide which hunk splinters to stage, one-b
 
 However, there was a hunk I wanted to split that had no common line.
 Enter 'e' for edit.
-This started a ```git edit``` session and I edited the hunk by hand.
+This started a `git edit` session and I edited the hunk by hand.
 Conceptually this is not too hard.
 The point to remember that you need to remove what you don't want staged.
 
@@ -118,12 +122,12 @@ After committing the comment revisions I wanted to indicate that
 what was left of the original commit could now be rebased.
 
 I don't know if this is possible.
-I got an error message when I tried ```git rebase --continue```
-and I ended up making a third commit because ```git rebase --help``` says ```git rebase --continue``` needs a clean working directory.
+I got an error message when I tried `git rebase --continue`
+and I ended up making a third commit because `git rebase --help` says `git rebase --continue` needs a clean working directory.
 
 ---
 
-Now the original 4 commits were 7.  I started another ```git rebase -i```.
+Now the original 4 commits were 7.  I started another `git rebase -i`.
 
 I reordered the new commits:
   * the first of the three, the one that renamed annotate(), went after the original patch that added annotate()
@@ -140,12 +144,12 @@ Perhaps I had issued the commands in the wrong order.
 
 On reflection, none of the above.
 
-During the second ```git add -i``` I split a hunk by hand in the editor
+During the second `git add -i` I split a hunk by hand in the editor
 while producing the second and third commits
-and during the third ```git add -i``` I had reordered these two commits.
+and during the third `git add -i` I had reordered these two commits.
 
 I suspect there would have been no trouble if I had not (had to) split a hunk by hand
-(and do so in a manner that does not match ```git``` default hunking rules).
+(and do so in a manner that does not match `git` default hunking rules).
 
 I'm fairly certain there would have been no trouble
 had I not reordered the second and third commits.
@@ -160,7 +164,7 @@ This means winding back the head so as to forget the commits that were about to 
 
     $ git reset 1f033ea05405c342deadec200704d244e9be0b10
 
-Ideally you do a ```git reset --hard``` to clean the working directory
+Ideally you do a `git reset --hard` to clean the working directory
 but I have subdirectories I did not want deleting
 so I decided to play safe.
 
@@ -175,7 +179,7 @@ Now it was possible to merge:
 
 I actually tried this with '-n' in the hope that it would do a dry run but the merge took place anyway.
 
-Consultation of ```git merge --help``` reveals that '-n' is short for '-no-stat'.
+Consultation of `git merge --help` reveals that '-n' is short for '-no-stat'.
 There appears to be no dry run option.
 
 Finally, check the program still builds and passes all regression tests.
@@ -187,3 +191,9 @@ The final reordering replaced 4 commits with 6.
 The first was the result of a squash - the original commit date was preserved.
 The last two were the result of a split - the original commit date was lost.
 Shame about the latter.  Perhaps we'll find a way around that too some day.
+
+---
+
+Copyright (C) 2016, NewForester, not for release or reuse.
+
+<!-- EOF -->

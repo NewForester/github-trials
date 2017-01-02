@@ -1,4 +1,6 @@
-Upload to GitHub a pre-exisiting local git repository
+<!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
+
+# Upload to GitHub a pre-exisiting local git repository
 
 ---
 
@@ -12,7 +14,7 @@ The instructions are here:
 
 [Adding an existing project to GitHub using the command line] (https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/).
 
-You won't actually be able to see the instructions unless you enable JavaScript for _github.com_.
+You won't actually be able to see the instructions unless you enable JavaScript for *github.com*.
 
 ---
 
@@ -37,10 +39,10 @@ I did make my own notes.  The command I was looking for is:
 
     git push -u origin master
 
-What ?  RTFM.  I did read _man git push_ and I've read it again now that I know what I was looking for.
-I've clearly a long way to go with learning _git_ before that description will make any sense.
+What ?  RTFM.  I did read `man git push` and I've read it again now that I know what I was looking for.
+I've clearly a long way to go with learning `git` before that description will make any sense.
 
-All it really tells me (now) is that using this flag means the parameters are assumed for _git pull_ and other, unspecified, commands
+All it really tells me (now) is that using this flag means the parameters are assumed for `git pull` and other, unspecified, commands
 in contexts unknown.
 Hmm ... I'll have to watch that one.
 
@@ -89,13 +91,28 @@ Conclusion:
 
 You have to create a repository in GitHub anyway so it is simpler to do that, clone the new repository, copy in your files and push.
 
-Only if you already have a _git_ repository with history that you want to host on GitHub is the palaver described above worth it.
+Only if you already have a `git` repository with history that you want to host on GitHub is the palaver described above worth it.
 It is not a lot of work but there is scope for mistakes all the more likely because this is not something you practise everyday.
 
-If you have a project already hosted somewhere else (possibly not even in a _git_ repository) then it would appear GitHub has facilities
+If you have a project already hosted somewhere else (possibly not even in a `git` repository) then it would appear GitHub has facilities
 for importing that may do what you want without the need to use a local copy and the command line.
+
+---
+
+If you follow the GitHub instructions for creating a repository, you create a README file and GitHub gleans the repository description from this.
+
+If as above, you create an empty repository there is no README file from which to glean a description.
+
+If you want to add one, navigate to the "Code" tab of the repository's main page.
+Just above the tabbar, you will see a grey note that the repository has no description and no web-page.
+
+To the right of this is an "Edit" button.
+Click on this button and enter your description.
+
+You can use the "Edit" button any time to amend the description.
 
 ---
 
 Copyright (C) 2016, NewForester, not for release or reuse.
 
+<!-- EOF -->
