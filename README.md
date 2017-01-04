@@ -18,9 +18,10 @@ rename-remote      | renaming a remote repository from 'origin' to 'github'
 private-email      | retroactively changing the e-mail address on commits
 ssh-authentication | changing from https to ssh authentication
 revise-commits     | revising/reordering a sequence of commits
+github-rename      | rename a GitHub repository
 
 ---
 
-Copyright (C) 2016, NewForester, not for release or reuse.
+Copyright (C) 2016,2017 NewForester, not for release or reuse.
 
 <!-- EOF -->
