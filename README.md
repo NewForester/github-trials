@@ -13,12 +13,13 @@ There is nothing of interest to anyone else in this repository.
 
 Trial              | Description
 -----              | -----------
-local-to-github    | adding a pre-existing git repository to GitHub
-rename-remote      | renaming a remote repository from 'origin' to 'github'
-private-email      | retroactively changing the e-mail address on commits
-ssh-authentication | changing from https to ssh authentication
-revise-commits     | revising/reordering a sequence of commits
+local-to-github    | add a pre-existing git repository to GitHub
+rename-remote      | rename a remote repository from 'origin' to 'github'
+private-email      | change the e-mail address on commits retroactively
+ssh-authentication | change from https to ssh authentication
+revise-commits     | revise/reorder a sequence of commits
 github-rename      | rename a GitHub repository
+backup-clone       | create a non-Github backup of a local repository
 
 ---
 
