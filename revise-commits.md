@@ -1,199 +1,196 @@
 <!-- github-trials by NewForester:  a series of notes on trials of GitHub and git features -->
 
-# Commit Revision - Attempt 1
+# Revising Commits
+
+These notes are on how to change one or more commits to a `git` repository.
+
+As recommended elsewhere, only do this on a local repository before the commits in question have be pushed to remote repositories.
+
+If you have the means of backing up your repositories, do so before you start.
+Getting it wrong can permanently loose data you do not want to loose.
+Getting it right may take practice.
+You have been warned.
+
+It is also a good idea to work with a clean directory so,
+until you are comfortable that you know what you are doing,
+stash your work before you start.
 
 ---
 
-These notes cover the first attempt to reorder/revise a sequence of commits so that it makes more sense.
-Something similar has been done before using `git cherry-pick` but that was a long time ago and no documentation survives.
+The simplest case of commit revision is the correction of a typographical error in the commit message of the most recent commit on a branch.
+Make sure you have the branch concerned checked out.
 
-Unfortunately, not everything worked as expected and things got confused.
-This write-up is more a reconstruction.
+Check the commit message you want to revise is the most recent one using:
 
-On this occasion, a modification to cribtutor was recorded as a sequence of commits:
+    git log -n 1
 
-  - Correct typo in test files
-  - Refactor the html parsing by splitting the print policy into annotate()
-  - Add test for the markdown list workaround
-  - Add the Massage module
-  - Integrate Massage module
+Make sure that you have no files in the staging area using:
 
-with a commit of help file changes pending.
+    git status
 
-The snag was that the last commit actually comprised three changes:
-  - Rename annotate() to annotateElement()
-  - Integrate Massage module
-  - Revise comments
+You need to unstage them because otherwise they will be committed when you change the commit message.
 
-The comment revisions were in the files altered by the Massage module integration, not the (new) Massage module itself.
+To change the commit message:
+
+    git commit --amend
+
+This will invoke your configured `git editor` where you can change the commit message to your heart's content.
 
 ---
 
-The Atlassian notes suggested that `git rebase -i` would do the trick.
+The next simplest case is to alter the files (or their contents) of the most recent commit on a branch.
 
-I suppose the operation could have been attempted on the 'master' branch
-but that would have been asking for trouble.
-
-Far better to do the operation on a branch.
-First, checkout the last commit we don't want to change and create a branch from that commit:
-
-    $ git checkout b23a93
-    $ git checkout -b cleanup
-    $ git rebase -i master
-
-The first two did what was expected and wanted but last one did not.
-
-The idea had been to rebase 'master' on the new branch 'cleanup' and use the interactive feature to rearrange the commits.
-This is what the Atlassian notes seemed to suggest you should do.
-
-Perhaps I was missing a flag but I don't see which.
-
-`git rebase -i` started `git edit` session but with no commits to rebase.
-On exit from the editor I found 'master' had indeed been rebased on 'cleanup'.
-
-I don't see why this should be so either.
+The procedure is the same but instead of unstaging all changes, make sure the staging area contains the changes you want included in the revised commit.
+Then run the `git commit --amend` as before.
 
 ---
 
-Try again.
+To alter older commits you exploit the `git rebase -i` command.
 
-I seem to remember that:
+Normal `git` work-flow would have you:
 
-    $ git rebase -i <commit>
+  1. create a branch
+  1. make changes on the branch
+  1. rebase the branch on its parent and immediately
+  1. merge the branch with its parent (usually 'master')
+  1. delete the branch.
 
-began from the commit after \<commit>.
+The purpose of the rebase it to bring the branch up to date with respect to its parent.
+You can do this as often as you like.
+I certainly am not yet aware of circumstances when this would be a bad idea.
 
-Also very useful was:
+`git rebase -i` (with the extra `-i`) also lets you re-order, edit and otherwise alter the commits on the branch.
+This is feature that is wanted.
 
-    $ git rebase --abort
+You can bring the branch up to date by rebasing without `-i` option
+to deal with any conflicts due the recent changes on the main branch and
+then rebase with `-i` over and over until you have thoroughly revised the commits on the branch.
 
-when you realised you were starting in the wrong place.
+If the branch is short lived, you will be able to revise any or all of the commits on the branch.
+If the branch is longer lived and you have previously merged commits on the branch back into the main branch
+then you will only be able to revise the commits on the branch made since the most recent merge.
 
----
+The same goes for 'master', where you can revise only those commits since the last push.
+The same, in effect, goes for any branch that has been pushed to any repository.
 
-I started with a rebase of the last commit as I wanted to split it into three.
-
-    $ git rebase -i <commit>
-
-In the `git edit` session I indicated that I wanted to edit the commit.
-
-The Atlassian notes simply say you can split commits this way.
-I referred to `git rebase --help`, the section on "Splitting Commits", for the how.
-
-    $ git reset HEAD^
-
-This puts the working directory into the state before the commit that it being split.
-
-First, I wanted to separate the renaming of annotate() to annotateElement().
-This involved only one file:
-
-    $ git add -i Html.cpp
-
-This starts a little session that is at first confusing.
-Type 'p' to patch, then '1' to select (the only file) to work through.
-
-The command processing will now present hunks one-by-one.
-Type 'y' to stage a hunk, 'n' to leave the hunk unstaged.
-
-At the end you have two copies of the file:  one staged, one unstaged.
-You need to commit the staged version.
-
-Second, I decided to stage the comment revisions leaving the integration changes.
-I could, and should, have done it the other way around.
-
-    $ git add cribtutor.cpp
-    $ git add -i Html.h Html.cpp
-
-All changes to `cribtutor.cpp` needed to be staged.
-I think I could have done that from within `git add -i`.
-The same probably goes for many times I ran `git diff` beforehand.
-
-For 'Html.h' there was a slight problem.
-First off, some hunks are run together because there is only one line or so unchanged between them.
-Enter 's' for split and then you can decide which hunk splinters to stage, one-by-one.
-
-However, there was a hunk I wanted to split that had no common line.
-Enter 'e' for edit.
-This started a `git edit` session and I edited the hunk by hand.
-Conceptually this is not too hard.
-The point to remember that you need to remove what you don't want staged.
-
-After committing the comment revisions I wanted to indicate that
-what was left of the original commit could now be rebased.
-
-I don't know if this is possible.
-I got an error message when I tried `git rebase --continue`
-and I ended up making a third commit because `git rebase --help` says `git rebase --continue` needs a clean working directory.
+Revising anything further back is, or is tantamount to, modification of commits that have been published.
+Technically possible but potentially very unpopular.
 
 ---
 
-Now the original 4 commits were 7.  I started another `git rebase -i`.
+The third case of commit revision is when you want to alter the commit message of an older commit on the branch.
+<!-- -->
 
-I reordered the new commits:
-  * the first of the three, the one that renamed annotate(), went after the original patch that added annotate()
-  * the second and third were swapped
+    git rebase -i <parent>
 
-Then I indicated that the now first two commits should be squashed (combined) into one.
+will rebase against the `<parent>` branch, usually, 'master' and invoke
+the `git editor` in which are listed the commits on the branch (oldest first).
 
-The rebase failed with a merge error.
+Each has the word 'pick' beside it.
+Change 'pick' to 'reword' for the commit(s) whose message(s) you want to change, save and exit.
 
-At the time I was confused.
-Perhaps I had staged something I had not meant to.
-Perhaps I had got an edit wrong somehow.
-Perhaps I had issued the commands in the wrong order.
-
-On reflection, none of the above.
-
-During the second `git add -i` I split a hunk by hand in the editor
-while producing the second and third commits
-and during the third `git add -i` I had reordered these two commits.
-
-I suspect there would have been no trouble if I had not (had to) split a hunk by hand
-(and do so in a manner that does not match `git` default hunking rules).
-
-I'm fairly certain there would have been no trouble
-had I not reordered the second and third commits.
-
-So, yes, I should have split them the other way.
+The `git editor` will now be invoked so you can change the commit message, just as for `git commit --amend`.
+It will be invoked for each commit you flagged with 'reword'.
 
 ---
 
-Next, but not finally, the new set of patches needed applying to the 'master' branch.
+The fourth case is when you want to alter the files (or their contents) of an older commit on the branch.
+There are two ways of doing this.
 
-This means winding back the head so as to forget the commits that were about to be replaced:
+Proceed as before but replace 'pick' with 'edit', save and exit.
 
-    $ git reset 1f033ea05405c342deadec200704d244e9be0b10
+The rebase will stop just after replaying, but before recommitting, the commit you want to alter.
+You are now free to do as you want but you need to finish off as the `git` suggests with:
 
-Ideally you do a `git reset --hard` to clean the working directory
-but I have subdirectories I did not want deleting
-so I decided to play safe.
+    git commit --amend
+    git rebase --continue
 
-This left me with a dirty working directory I need to clean up by hand:
+The working directory needs to be clean for the rebase to continue.
 
-    $ git checkout Html.cpp Html.h cribtutor.cpp makefile test/cribsheets.txt
-    $ rm Massage.cpp Massage.h test/markdown.html test/markdown.inp test/markdown.ref
+This process may be a little risky so you might want to do some testing before committing.
 
-Now it was possible to merge:
+If you decide you are in the sheep dip, you can cancel the whole rebase with:
 
-    git merge cleanup
+    git rebase --abort
 
-I actually tried this with '-n' in the hope that it would do a dry run but the merge took place anyway.
-
-Consultation of `git merge --help` reveals that '-n' is short for '-no-stat'.
-There appears to be no dry run option.
-
-Finally, check the program still builds and passes all regression tests.
-Clean up temporaries and push changes upstream.
+and work on mustering up the nerve to try again.
 
 ---
 
-The final reordering replaced 4 commits with 6.
-The first was the result of a squash - the original commit date was preserved.
-The last two were the result of a split - the original commit date was lost.
-Shame about the latter.  Perhaps we'll find a way around that too some day.
+The alternative way of altering an older commit is to make and test your changes;
+commit them and only then run rebase.
+
+The new commit with your revisions will appear at the bottom of the commit list.
+
+Change 'pick' to 'squash' or 'fixup' and move the commit in the editor
+so that it is listed immediately after the commit you want to alter.
+Save and exit.
+
+The rebase will combine the two commits, keeping the who and when of the older commit.
+It will invoke the `git editor` so that you can amend the commit message.
+
+Use 'squash' and the newer commit's message is commented out.
+Use 'fixup' and the older commit's message is commented out.
+Either way, in the editor you are free to devise the commit message of your choice.
 
 ---
 
-Copyright (C) 2016, NewForester, not for release or reuse.
+Note so far there has been no mention of using `git reset`.
+This command is more about throwing work away than amending it.
+
+This sounds risky but it is handy for moving commits onto a banch.
+
+It is recommended you always work on a (sub)branch and never on the main branch (typically 'master').
+
+Suppose you have been not being doing so and now, oh rat scat, you need to make a urgent change and release it.
+What you need to do now is move the more recent commits off 'master' onto a branch.
+
+This allows you to sort out the urgent problem (on a branch of course) that you can rebase, merge and push.
+It also sets the current work up the way it should have been done in the first place.
+
+Use `git log` to identify the last commit that should stay on 'master' (say the commit with the id `123abc`).
+Create the branch and then populate it with the more recent commits:
+
+    git branch work 123abc
+    git checkout work
+    git rebase master
+
+<!-- -->
+Now you can go back to the master and remove the more recent commits:
+
+    git checkout master
+    git reset --hard 123abc
+
+<!-- -->
+The more recent commits have now been safely moved from 'master' to 'work' and
+you can now get on with the urgent work on its own branch.
+Once that has been completed, merged and pushed, you can switch to the 'work' branch,
+rebase it on 'master' and carrying on safely.
+
+Here is a simpler way of achieving the same result:
+
+    git branch work
+    git reset --hard 123abc
+    git checkout work
+
+---
+
+The final example is how to alter the first commit in a repository.
+
+If you create a local repository instead of cloning a remote repository,
+it is quite easy to forget to create a branch and work on that
+until you are several commit in.
+
+Following the instructions above,
+all but the first commit can be moved onto a branch.
+
+All that is left on 'master' is the first commit.
+It can now be altered using `git commit --amend` as needed.
+
+Rebase your work branch before continuing.
+
+---
+
+<div>Copyright (C) 2017, NewForester, not for release or reuse.</div>
 
 <!-- EOF -->
